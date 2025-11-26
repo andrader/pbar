@@ -1,4 +1,3 @@
-import asyncio
 from time import sleep
 
 from pbar import progress_bar
@@ -40,16 +39,35 @@ def test_list():
             sleep(0.1)
 
 
-async def test_async():
-    """Test async iteration with progress bar"""
+def test_nested():
+    for i in progress_bar(range(3), desc="outer"):
+        for j in progress_bar(range(5), desc="inner", transient=True):
+            sleep(1)
 
-    async def async_generator():
-        for i in range(10):
-            await asyncio.sleep(0.1)
-            yield i
 
-    print("test async generator")
-    async for i in progress_bar(
-        async_generator(), desc="test async generator", transient=False
-    ):
-        await asyncio.sleep(0.1)
+# test_nested()
+
+
+def test_async():
+    import asyncio
+
+    import pbar
+
+    async def subtask(n):
+        await asyncio.sleep(n)
+        return n * 2
+
+    async def task(n):
+        subtasks = [subtask(i) for i in range(n)]
+        results = await pbar.gather(*subtasks, desc=f"Running subtasks for task {n}")
+        return sum(results)
+
+    async def test():
+        tasks = [task(3), task(2), task(3)]
+        results = await pbar.gather(*tasks, desc="Running tasks...")
+        print(results)
+
+    asyncio.run(test())
+
+
+test_async()
