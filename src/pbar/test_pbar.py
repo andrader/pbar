@@ -1,5 +1,6 @@
-
+import asyncio
 from time import sleep
+
 from pbar import progress_bar
 
 
@@ -37,3 +38,18 @@ def test_list():
     for i in progress_bar(a, desc="test", transient=False):
         for j in progress_bar(range(10), desc=f"subtest {i}", transient=bool(i % 2)):
             sleep(0.1)
+
+
+async def test_async():
+    """Test async iteration with progress bar"""
+
+    async def async_generator():
+        for i in range(10):
+            await asyncio.sleep(0.1)
+            yield i
+
+    print("test async generator")
+    async for i in progress_bar(
+        async_generator(), desc="test async generator", transient=False
+    ):
+        await asyncio.sleep(0.1)
