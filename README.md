@@ -1,13 +1,15 @@
 # pbar
 
-A simple progress bar for Python, built on top of Rich.
-
-## Features
-
-- Simple wrapper around iterables.
+A progress bar for Python, built on top of Rich with:
 - Support for nested progress bars.
 - `asyncio.gather` wrapper with progress tracking.
 - Transient progress bars (disappear when done).
+ 
+<img width="547" height="43" alt="image" src="https://github.com/user-attachments/assets/1201a5d5-d29c-426a-8329-45c153e7ac1d" />
+
+
+I built this to deal with limitations in tqdm and rich progress bars.
+
 
 ## Quickstart
 
